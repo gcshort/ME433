@@ -65,6 +65,14 @@ frq = frq[range(int(n/2))] # one side frequency range
 Y = np.fft.fft(y)/n # fft computing and normalization
 Y = Y[range(int(n/2))]
 
+nn = len(new_average)
+kf = np.arange(nn)
+Tf = nn/Fs
+frqf = kf/Tf # two sides frequency range
+frqf = frq[range(int(nn/2))] # one side frequency range
+Y_filt = np.fft.fft(new_average)/nn
+Y_filt = Y_filt[range(int(nn/2))]
+
 fig, (ax1, ax2) = plt.subplots(2, 1)
 
 ax1.plot(t,y,'k')
@@ -72,7 +80,8 @@ ax1.plot(t,new_average,'r')
 ax1.set_title('B with IIR A:' + str(a) + " B: " + str(b))
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Amplitude')
-ax2.loglog(frq,abs(Y),'b') # plotting the fft
+ax2.loglog(frq,abs(Y),'k') # plotting the fft
+ax2.loglog(frqf,abs(Y_filt),'r')
 ax2.set_xlabel('Freq (Hz)')
 ax2.set_ylabel('|B(freq)|')
 plt.show()
