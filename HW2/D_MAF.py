@@ -1,20 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Created on Fri Apr  2 20:38:36 2021
-
-@author: garre
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 20:37:01 2021
-
-@author: garre
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 20:29:51 2021
+Created on Tue Apr  6 19:34:35 2021
 
 @author: garre
 """
@@ -33,12 +19,10 @@ import numpy as np
 t = [] # column 0
 data1 = [] # column 1
 filtered = []
-new_average = []
-a = .998
-b = 0.002
+x =  35
 
 
-with open('sigC.csv') as f:
+with open('sigD.csv') as f:
     # open the csv file
     reader = csv.reader(f)
     for row in reader:
@@ -50,11 +34,12 @@ with open('sigC.csv') as f:
 for i in range(len(t)):
    #print the data to verify it was read
   # print(str(t[i]) + ", " + str(data1[i]))
-   if i == 0:
-       new_average.append(float(data1[i]))
-   else:
-       new_average.append(float(a*new_average[i-1] + b*data1[i]))
+   if i > (x-1):
+       average = 0
+       for ii in range(x):
+           average = average + data1[i - ii - 1]
            
+       filtered.append(float( average / x))
        
        
    
@@ -72,23 +57,24 @@ frq = frq[range(int(n/2))] # one side frequency range
 Y = np.fft.fft(y)/n # fft computing and normalization
 Y = Y[range(int(n/2))]
 
-nn = len(new_average)
+nn = len(filtered)
 kf = np.arange(nn)
 Tf = nn/Fs
 frqf = kf/Tf # two sides frequency range
 frqf = frq[range(int(nn/2))] # one side frequency range
-Y_filt = np.fft.fft(new_average)/nn
+Y_filt = np.fft.fft(filtered)/nn
 Y_filt = Y_filt[range(int(nn/2))]
+
 
 fig, (ax1, ax2) = plt.subplots(2, 1)
 
 ax1.plot(t,y,'k')
-ax1.plot(t,new_average,'r')
-ax1.set_title('C with IIR A:' + str(a) + " B: " + str(b))
+ax1.plot(t[x:n],filtered,'r')
+ax1.set_title('D Moving Average Filter: ' + str(x) + ' Data Points')
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Amplitude')
 ax2.loglog(frq,abs(Y),'k') # plotting the fft
 ax2.loglog(frqf,abs(Y_filt),'r')
 ax2.set_xlabel('Freq (Hz)')
-ax2.set_ylabel('|C(freq)|')
-plt.show()
+ax2.set_ylabel('|D(freq)|')
+plt.show() 

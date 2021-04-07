@@ -12,7 +12,7 @@ import numpy as np
 t = [] # column 0
 data1 = [] # column 1
 filtered = []
-x =  1
+x =  2500
 
 
 with open('sigC.csv') as f:

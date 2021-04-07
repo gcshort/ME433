@@ -1,4 +1,23 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Apr  6 19:36:36 2021
 
+@author: garre
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Apr  5 20:27:36 2021
+
+@author: garre
+"""
+
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Apr  2 19:45:43 2021
+
+@author: garre
+"""
 
 import csv
 import matplotlib.pyplot as plt
@@ -7,7 +26,7 @@ import numpy as np
 t = [] # column 0
 data1 = [] # column 1
 filtered = []
-x   = [
+x =[
     0.002519950945123121,
     0.003200555561023921,
     0.003965279177753558,
@@ -67,7 +86,7 @@ x   = [
     0.002519950945123121,
 ]
 
-with open('sigC.csv') as f:
+with open('sigD.csv') as f:
     # open the csv file
     reader = csv.reader(f)
     for row in reader:
@@ -117,11 +136,11 @@ fig, (ax1, ax2) = plt.subplots(2, 1)
 
 ax1.plot(t,y,'k')
 ax1.plot(t[len(x):n],filtered,'r')
-ax1.set_title('C FIR: Too many')
+ax1.set_title('D FIR: Too many to list' )#+ str(x))
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Amplitude')
 ax2.loglog(frq,abs(Y),'k') # plotting the fft
 ax2.loglog(frqf,abs(Y_filt),'r')
 ax2.set_xlabel('Freq (Hz)')
-ax2.set_ylabel('|C(freq)|')
+ax2.set_ylabel('|D(freq)|')
 plt.show()

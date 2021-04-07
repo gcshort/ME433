@@ -1,30 +1,4 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 20:38:36 2021
 
-@author: garre
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 20:37:01 2021
-
-@author: garre
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 20:29:51 2021
-
-@author: garre
-"""
-
-# -*- coding: utf-8 -*-
-"""
-Created on Fri Apr  2 19:45:43 2021
-
-@author: garre
-"""
 
 import csv
 import matplotlib.pyplot as plt
@@ -34,11 +8,11 @@ t = [] # column 0
 data1 = [] # column 1
 filtered = []
 new_average = []
-a = .998
-b = 0.002
+a = .95
+b = 0.05
 
 
-with open('sigC.csv') as f:
+with open('sigD.csv') as f:
     # open the csv file
     reader = csv.reader(f)
     for row in reader:
@@ -84,11 +58,11 @@ fig, (ax1, ax2) = plt.subplots(2, 1)
 
 ax1.plot(t,y,'k')
 ax1.plot(t,new_average,'r')
-ax1.set_title('C with IIR A:' + str(a) + " B: " + str(b))
+ax1.set_title('D with IIR A:' + str(a) + " B: " + str(b))
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Amplitude')
 ax2.loglog(frq,abs(Y),'k') # plotting the fft
 ax2.loglog(frqf,abs(Y_filt),'r')
 ax2.set_xlabel('Freq (Hz)')
-ax2.set_ylabel('|C(freq)|')
+ax2.set_ylabel('|D(freq)|')
 plt.show()
