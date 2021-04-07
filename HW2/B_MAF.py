@@ -65,7 +65,7 @@ ax1.plot(t[x:n],filtered,'r')
 ax1.set_title('B Moving Average Filter: ' + str(x) + ' Data Points')
 ax1.set_xlabel('Time')
 ax1.set_ylabel('Amplitude')
-ax2.loglog(frq,abs(Y),'b') # plotting the fft
+ax2.loglog(frq,abs(Y),'k') # plotting the fft
 ax2.loglog(frqf,abs(Y_filt),'r')
 ax2.set_xlabel('Freq (Hz)')
 ax2.set_ylabel('|B(freq)|')
