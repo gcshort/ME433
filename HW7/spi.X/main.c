@@ -79,11 +79,131 @@ int main() {
     initSPI();
     __builtin_enable_interrupts();
     char m[100];
-    unsigned char i = 0;
+    int i =0;
+    unsigned char a = 0;
+    unsigned char b = 1;
+    unsigned short v[100] = {0,
+ 81,
+ 163,
+ 245,
+ 327,
+ 409,
+ 491,
+ 573,
+ 655,
+ 737,
+ 819,
+ 901,
+ 983,
+ 1064,
+ 1146,
+ 1228,
+ 1310,
+ 1392,
+ 1474,
+ 1556,
+ 1638,
+ 1720,
+ 1802,
+ 1884,
+ 1966,
+ 2048,
+ 2129,
+ 2211,
+ 2293,
+ 2375,
+ 2457,
+ 2539,
+ 2621,
+ 2703,
+ 2785,
+ 2867,
+ 2949,
+ 3031,
+ 3112,
+ 3194,
+ 3276,
+ 3358,
+ 3440,
+ 3522,
+ 3604,
+ 3686,
+ 3768,
+ 3850,
+ 3932,
+ 4014,
+ 4095,
+ 4014,
+ 3932,
+ 3850,
+ 3768,
+ 3686,
+ 3604,
+ 3522,
+ 3440,
+ 3358,
+ 3276,
+ 3194,
+ 3112,
+ 3031,
+ 2949,
+ 2867,
+ 2785,
+ 2703,
+ 2621,
+ 2539,
+ 2457,
+ 2375,
+ 2293,
+ 2211,
+ 2129,
+ 2048,
+ 1966,
+ 1884,
+ 1802,
+ 1720,
+ 1638,
+ 1556,
+ 1474,
+ 1392,
+ 1310,
+ 1228,
+ 1146,
+ 1064,
+ 983,
+ 901,
+ 819,
+ 737,
+ 655,
+ 573,
+ 491,
+ 409,
+ 327,
+ 245,
+ 163,
+ 81};
+    
+    unsigned short vs[50] = {2048,2305,2557,2802,3035,3252,3450,3626,
+3777,3901,3996,4060,4092,4092,4060,3996,
+3901,3777,3626,3450,3252,3035,2802,2557,
+2305,2048,1791,1539,1294,1061,844,646,
+470,319,195,100,36,4,4,36,
+100,195,319,470,646,844,1061,1294,
+1539,1791,2048};
+    
+    int ii = 0;
+    unsigned short p;
+    unsigned short q;
     while (1) {
         
+        
+        p = a << 15;
+        p = p | (0b111 << 12);
+        p = p | v[i];
+        
         LATAbits.LATA0 = 0;
-        spi_io(i);
+        spi_io((p>>8));
+        spi_io(p);
         LATAbits.LATA0 = 1;
         
         i++;
@@ -91,8 +211,26 @@ int main() {
         if (i == 100){
             i = 0;
         }
+        
+        q = b << 15;
+        q = q | (0b111 << 12);
+        q = q | vs[ii];
+        
+        
+        LATAbits.LATA0 = 0;
+        spi_io((q>>8));
+        spi_io(q);
+        LATAbits.LATA0 = 1;
+        
+        
+        ii++;
+        
+        if (ii == 50){
+            ii = 0;
+        }
+        
         _CP0_SET_COUNT(0);
-        while(_CP0_GET_COUNT() < 24000000){
+        while(_CP0_GET_COUNT() < 240000){
         }
         
         if(PORTBbits.RB4 == 0){
@@ -174,7 +312,7 @@ void initSPI() {
     // setup SPI1
     SPI1CON = 0; // turn off the spi module and reset it
     SPI1BUF; // clear the rx buffer by reading from it
-    SPI1BRG = 1000; // 1000 for 24kHz, 1 for 12MHz; // baud rate to 10 MHz [SPI1BRG = (48000000/(2*desired))-1]
+    SPI1BRG = 1; // 1000 for 24kHz, 1 for 12MHz; // baud rate to 10 MHz [SPI1BRG = (48000000/(2*desired))-1]
     SPI1STATbits.SPIROV = 0; // clear the overflow bit
     SPI1CONbits.CKE = 1; // data changes when clock goes from hi to lo (since CKP is 0)
     SPI1CONbits.MSTEN = 1; // master operation
