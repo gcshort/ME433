@@ -1,6 +1,7 @@
 #include<xc.h>           // processor SFR definitions
 #include<sys/attribs.h>  // __ISR macro
 #include <stdio.h>
+#include "ws2812b.h"
 // DEVCFG0
 #pragma config DEBUG = OFF // disable debugging
 #pragma config JTAGEN = OFF // disable jtag
@@ -56,31 +57,67 @@ int main() {
     TRISBbits.TRISB4 = 1;
     
     
+    //U1RXRbits.U1RXR = 0b0001; //sets B6 to RX
+    //RPB7Rbits.RPB7R = 0b0001; //sets B7 to TX
     
-  
+     // turn on UART3 without an interrupt
+    //U1MODEbits.BRGH = 0; // set baud to NU32_DESIRED_BAUD
+    //U1BRG = ((48000000 / 115200) / 16) - 1;
+
+    // 8 bit, no parity bit, and 1 stop bit (8N1 setup)
+    //U1MODEbits.PDSEL = 0;
+    //U1MODEbits.STSEL = 0;
+
+     // configure TX & RX pins as output & input pins
+    //U1STAbits.UTXEN = 1;
+    //U1STAbits.URXEN = 1;
+    // enable the uart
+    //U1MODEbits.ON = 1;
+    ws2812b_setup();
     __builtin_enable_interrupts();
+    
     char m[100];
+    int i = 0;
+    int j = 0;
+    int k = 0;
+    int l = 0;
     while (1) {
-        if(PORTBbits.RB4 == 0){
-            _CP0_SET_COUNT(0);
-            LATAbits.LATA4 = 1;
-            while(_CP0_GET_COUNT() < 12000000){
-            }
-            _CP0_SET_COUNT(0);
-            LATAbits.LATA4 = 0;
-            while(_CP0_GET_COUNT() < 12000000){
-            }
-            _CP0_SET_COUNT(0);
-            LATAbits.LATA4 = 1;
-            while(_CP0_GET_COUNT() < 12000000){
-            }
-            LATAbits.LATA4 = 0;
-            
-            
-          
+        _CP0_SET_COUNT(0);
+        
+        while(_CP0_GET_COUNT() < 150000){
         }
+            
+            
+            //sprintf(m,"hello!\r\n");
+            //WriteUART1(m);
+        wsColor color1 = HSBtoRGB(0 + i,1,0.1);
+        wsColor color2 = HSBtoRGB(90 + j,1,0.1);
+        wsColor color3 = HSBtoRGB(180 + k,1,0.1);
+        wsColor color4 = HSBtoRGB(270 + l,1,0.1);
+        
+        wsColor color[4] = {color1,color2,color3,color4};
+        ws2812b_setColor(&color,4);
+        i += 1;
+        j += 1;
+        k += 1;
+        l += 1;
+        if(i == 360){
+            i=0;
+        }
+        if(j == 270){
+            j=-90;
+        }
+        if(k == 180){
+            k=-180;
+        }
+        if(l == 90){
+            l=-270;
+        
+        }
+        
         // use _CP0_SET_COUNT(0) and _CP0_GET_COUNT() to test the PIC timing
         // remember the core timer runs at half the sysclk
 
     }
 }
+
