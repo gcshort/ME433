@@ -89,9 +89,6 @@ int main() {
                     LCD_drawPixel(x,y,BLACK);
                 }
             }
-            sprintf(m,"KEERCHOW");
-            char* s = m;
-            drawString(28,150,WHITE,s);
         }
        
         for(x = 85;x<110;x++){
